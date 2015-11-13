@@ -6,56 +6,73 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class ProductController extends Controller
-{
+class ProductController extends Controller {
+
     /**
-     * @Route("/list")
+     * @Route("/list", name="product_list")
      * @Template()
      */
-    public function listAction()
-    {
-        return array(
-                // ...
-            );    }
+    public function listAction() {
+        
+        $products = $this->getProducts();
+        return $this->render('product/list.html.twig', array(
+            'products' => []
+        ));
+    }
 
     /**
      * @Route("/addToCart/{id}")
      * @Template()
      */
-    public function addToCartAction()
-    {
+    public function addToCartAction() {
         return array(
                 // ...
-            );    }
+        );
+    }
 
     /**
      * @Route("/basket")
      * @Template()
      */
-    public function basketAction()
-    {
+    public function basketAction() {
         return array(
                 // ...
-            );    }
+        );
+    }
 
     /**
      * @Route("/removeFromCart/{id}")
      * @Template()
      */
-    public function removeFromCartAction()
-    {
+    public function removeFromCartAction() {
         return array(
                 // ...
-            );    }
+        );
+    }
 
     /**
      * @Route("/clearBasket")
      * @Template()
      */
-    public function clearBasketAction()
-    {
+    public function clearBasketAction() {
         return array(
                 // ...
-            );    }
+        );
+    }
+    
+    private function getProducts(){
+        $file = file('product.txt');
+        $products = array();
+        foreach ($file as $p){
+            $e = explode(':', trim($p));
+            $products[$e[0]] = array(
+                'id' => $e[0],
+                'name' => $e[1],
+                'price' => $e[2],
+                'description' => $e[3],
+            );
+        }
+        return $products;
+    }
 
 }
